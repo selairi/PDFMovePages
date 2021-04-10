@@ -42,6 +42,31 @@
             flex-direction: row;
             align-items: flex-start; 
         }
+
+        #archivo1 {
+            display: none;
+        }
+
+        #menu {
+            background-color: white;
+        }
+        
+        .button {
+            background-color: #008CBA;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        body {
+            background-color: #F8F8FF;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -49,17 +74,22 @@
 <body>
 <div id='main'>
     <div id='menu'>
-        <input type="file" id="archivo1" name="archivo1">
-        <button onclick="loadPDF()">+</button>
-        <button onclick="buildPDF()">▶</button><br>
+        <input type="file" id="archivo1" name="archivo1" onchange='loadPDF()' >
+        <button class='button' onclick="openDialog()">+</button>
+        <button class='button' onclick="buildPDF()">▶</button><br>
     </div>
     <div id = 'layout'>
         <div id='pages'></div>
-        <div id='wait'>⌛</div>
+        <div id='wait'><br/><br/><br/>⌛</div>
     </div>
 </div>
 <script>
     let archivos = [];
+
+    function openDialog() {
+        var archivo1 = document.getElementById("archivo1");
+        archivo1.click();
+    }
     
     async function loadPDF() {
         var archivo1 = document.getElementById('archivo1').files[0];
@@ -76,6 +106,9 @@
             // Se añaden todas las páginas al visor
             var pagesDiv = document.getElementById("pages");
             PDFLib.PDFDocument.load(archivo).then((pdfDoc) => {
+                var divWait = document.getElementById("wait");
+                divWait.style.display = 'block';
+                pagesDiv.style.display = 'none';
                 for(var nPage = 1; nPage < pdf._pdfInfo.numPages; nPage++) {
                     let div = document.createElement("div");
                     let canvas = document.createElement("canvas");
@@ -107,6 +140,8 @@
                     div.appendChild(divH);
                     pagesDiv.appendChild(div);
                 }
+                divWait.style.display = 'none';
+                pagesDiv.style.display = 'flex';
             });
         });
     }
