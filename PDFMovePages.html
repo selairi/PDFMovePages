@@ -109,7 +109,7 @@
                 var divWait = document.getElementById("wait");
                 divWait.style.display = 'block';
                 pagesDiv.style.display = 'none';
-                for(var nPage = 1; nPage < pdf._pdfInfo.numPages; nPage++) {
+                for(var nPage = 1; nPage <=pdf._pdfInfo.numPages; nPage++) {
                     let div = document.createElement("div");
                     let canvas = document.createElement("canvas");
                     pdf.getPage(nPage).then((page) => {
